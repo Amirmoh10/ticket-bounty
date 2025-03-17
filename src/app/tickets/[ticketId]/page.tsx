@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Placeholder } from "@/components/placeholder";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { mockTicketsData } from "@/data";
 import { TicketItem } from "@/features/ticket/components/ticketItem";
 import { ticketsPath } from "@/paths";
@@ -21,9 +21,12 @@ const TicketPage = async ({ params }: TicketPageProps) => {
       <Placeholder
         label="Ticket not found"
         button={
-          <Button asChild variant="outline">
-            <Link href={ticketsPath()}>Go to Tickets</Link>
-          </Button>
+          <Link
+            href={ticketsPath()}
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Go to Tickets
+          </Link>
         }
       />
     );
