@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Placeholder } from "@/components/placeholder";
 import { buttonVariants } from "@/components/ui/button";
-import { mockTicketsData } from "@/data";
+import { getTicket } from "@/features/queries/get-ticket";
 import { TicketItem } from "@/features/ticket/components/ticketItem";
 import { ticketsPath } from "@/paths";
 
@@ -14,7 +14,7 @@ type TicketPageProps = {
 
 const TicketPage = async ({ params }: TicketPageProps) => {
   const { ticketId } = await params;
-  const ticket = mockTicketsData.find((ticket) => ticket.id === ticketId);
+  const ticket = await getTicket(ticketId);
 
   if (!ticket) {
     return (
