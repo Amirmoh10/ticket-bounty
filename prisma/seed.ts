@@ -21,11 +21,17 @@ const tickets = [
 ];
 
 const seed = async () => {
+  const startTime = performance.now();
+  console.log("seeding tickets started...");
+
   //first delete all tickets
   await prisma.ticket.deleteMany();
 
   //then create new ones tickets
   await prisma.ticket.createMany({ data: tickets });
+
+  const endTime = performance.now();
+  console.log(`seeding tickets completed in ${endTime - startTime}ms`);
 };
 
 seed();
