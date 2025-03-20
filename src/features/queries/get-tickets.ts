@@ -1,11 +1,11 @@
-import { mockTicketsData } from "@/data";
+import { prisma } from "@/lib/prisma-client";
 
 import { Ticket } from "../ticket/types";
 
 const getTickets = async (): Promise<Ticket[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const tickets = await prisma.ticket.findMany();
 
-  return mockTicketsData;
+  return tickets;
 };
 
 export { getTickets };
