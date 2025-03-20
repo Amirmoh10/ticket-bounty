@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma-client";
+import { Ticket } from "@prisma/client";
 
-import { Ticket } from "../ticket/types";
+import { prisma } from "@/lib/prisma-client";
 
 const getTickets = async (): Promise<Ticket[]> => {
   const tickets = await prisma.ticket.findMany();
