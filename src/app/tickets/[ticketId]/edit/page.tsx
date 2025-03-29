@@ -17,7 +17,7 @@ const TicketEditPage = async ({ params }: TicketEditPageParams) => {
   }
 
   return (
-    <div>
+    <div className="flex-1 flex flex-col justify-center items-center">
       <CardCompact
         title="Create Ticket"
         description="A new ticket will be created"
