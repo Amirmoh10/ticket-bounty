@@ -31,6 +31,10 @@ export const upsertTicket = async (
       create: data,
     });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { message: error.errors[0].message, payload: formData };
+    }
+
     return { message: "Something went wrong", payload: formData };
   }
 
