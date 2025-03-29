@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ticketEditPath, ticketPath } from "@/paths";
 
-import { deleteTicket } from "../actions/delete-ticket";
+import { deleteTicket } from "../../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
 
 type TicketItemProps = {
@@ -38,7 +38,12 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
   const deleteButton = (
     <form action={deleteTicket.bind(null, ticket.id)}>
-      <Button variant="outline" size="icon" type="submit">
+      <Button
+        variant="outline"
+        size="icon"
+        type="submit"
+        className="cursor-pointer"
+      >
         <LucideTrash className="h-4 w-4" />
       </Button>
     </form>

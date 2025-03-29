@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { CardCompact } from "@/components/card-compact";
 import { getTicket } from "@/features/queries/get-ticket";
-import TicketForm from "@/features/ticket/components/ticketCreateForm";
+import TicketUpsertForm from "@/features/ticket/components/ticketUpsertForm";
 
 type TicketEditPageParams = {
   params: Promise<{ ticketId: string }>;
@@ -22,7 +22,7 @@ const TicketEditPage = async ({ params }: TicketEditPageParams) => {
         title="Create Ticket"
         description="A new ticket will be created"
         className="w-full max-w-[420px] self-center"
-        content={<TicketForm ticket={ticket} />}
+        content={<TicketUpsertForm ticket={ticket} />}
       />
     </div>
   );

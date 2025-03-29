@@ -1,17 +1,17 @@
 import { Ticket } from "@prisma/client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { upsertTicket } from "@/features/actions/upsert-ticket";
 
-import { upsertTicket } from "../actions/upsert-ticket";
+import { SubmitButton } from "./submit-button";
 
-type TicketCreateFormProps = {
+export type TicketCreateFormProps = {
   ticket?: Ticket;
 };
 
-const TicketForm = ({ ticket }: TicketCreateFormProps) => {
+const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
   return (
     <form
       action={upsertTicket.bind(null, ticket?.id)}
@@ -23,9 +23,9 @@ const TicketForm = ({ ticket }: TicketCreateFormProps) => {
       <Label htmlFor="content">Content</Label>
       <Textarea id="content" name="content" defaultValue={ticket?.content} />
 
-      <Button type="submit">{ticket ? "Edit" : "Create"}</Button>
+      <SubmitButton label={ticket ? "Edit" : "Create"} />
     </form>
   );
 };
 
-export default TicketForm;
+export default TicketUpsertForm;
