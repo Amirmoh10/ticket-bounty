@@ -1,4 +1,7 @@
+"use client";
+
 import { Ticket } from "@prisma/client";
+import { useActionState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,11 +15,15 @@ export type TicketCreateFormProps = {
 };
 
 const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
+  const [actionState, action] = useActionState(
+    upsertTicket.bind(null, ticket?.id),
+    {
+      message: "",
+    }
+  );
+
   return (
-    <form
-      action={upsertTicket.bind(null, ticket?.id)}
-      className="flex flex-col gap-y-2"
-    >
+    <form action={action} className="flex flex-col gap-y-2">
       <Label htmlFor="title">Title</Label>
       <Input id="title" name="title" type="text" defaultValue={ticket?.title} />
 
@@ -24,6 +31,7 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
       <Textarea id="content" name="content" defaultValue={ticket?.content} />
 
       <SubmitButton label={ticket ? "Edit" : "Create"} />
+      {actionState.message}
     </form>
   );
 };

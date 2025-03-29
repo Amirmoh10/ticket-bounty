@@ -8,6 +8,7 @@ import { ticketsPath } from "@/paths";
 
 export const upsertTicket = async (
   ticketId: string | undefined,
+  _state: { message: string },
   formData: FormData
 ) => {
   const title = formData.get("title");
@@ -25,4 +26,6 @@ export const upsertTicket = async (
   if (ticketId) {
     redirect(ticketsPath());
   }
+
+  return { message: "Ticket created successfully" };
 };
