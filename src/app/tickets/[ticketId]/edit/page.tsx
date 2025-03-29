@@ -19,8 +19,8 @@ const TicketEditPage = async ({ params }: TicketEditPageParams) => {
   return (
     <div className="flex-1 flex flex-col justify-center items-center">
       <CardCompact
-        title="Create Ticket"
-        description="A new ticket will be created"
+        title="Edit Ticket"
+        description="A ticket will be edited"
         className="w-full max-w-[420px] self-center"
         content={<TicketUpsertForm ticket={ticket} />}
       />

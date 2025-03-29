@@ -2,9 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 import { prisma } from "@/lib/prisma-client";
 import { ticketsPath } from "@/paths";
+
+const upsertTicketSchema = z.object({
+  title: z.string().min(1).max(191),
+  content: z.string().min(1).max(1024),
+});
 
 export const upsertTicket = async (
   ticketId: string | undefined,
@@ -13,13 +19,20 @@ export const upsertTicket = async (
 ) => {
   const title = formData.get("title");
   const content = formData.get("content");
-  const data = { title: title as string, content: content as string };
+  try {
+    const data = upsertTicketSchema.parse({
+      title: title,
+      content: content,
+    });
 
-  await prisma.ticket.upsert({
-    where: { id: ticketId ?? "" },
-    update: data,
-    create: data,
-  });
+    await prisma.ticket.upsert({
+      where: { id: ticketId ?? "" },
+      update: data,
+      create: data,
+    });
+  } catch (error) {
+    return { message: "Something went wrong", payload: formData };
+  }
 
   revalidatePath(ticketsPath());
 
