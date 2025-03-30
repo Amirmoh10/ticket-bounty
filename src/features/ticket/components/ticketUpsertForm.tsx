@@ -4,6 +4,7 @@ import { Ticket } from "@prisma/client";
 import { useActionState } from "react";
 
 import FieldError from "@/components/form/field-error";
+import { EMPTY_ACTION_STATE } from "@/components/form/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,11 +19,7 @@ export type TicketCreateFormProps = {
 const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
   const [actionState, action] = useActionState(
     upsertTicket.bind(null, ticket?.id),
-    {
-      message: "",
-      fieldErrors: undefined,
-      payload: undefined,
-    }
+    EMPTY_ACTION_STATE
   );
 
   const { message, payload, fieldErrors } = actionState;

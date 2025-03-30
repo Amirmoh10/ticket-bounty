@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { ActionState } from "@/components/form/utils";
 import { prisma } from "@/lib/prisma-client";
 import { ticketsPath } from "@/paths";
 
@@ -14,13 +15,9 @@ const upsertTicketSchema = z.object({
 
 export const upsertTicket = async (
   ticketId: string | undefined,
-  _state: {
-    message: string;
-    payload?: FormData;
-    fieldErrors?: Record<string, string[] | undefined>;
-  },
+  _actionState: ActionState,
   formData: FormData
-) => {
+): Promise<ActionState> => {
   const title = formData.get("title");
   const content = formData.get("content");
   try {
@@ -37,14 +34,28 @@ export const upsertTicket = async (
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
+        status: "ERROR",
         message: "",
         payload: formData,
         fieldErrors: error.flatten().fieldErrors,
+        timestamp: new Date(),
       };
     } else if (error instanceof Error) {
-      return { message: error.message, payload: formData };
+      return {
+        status: "ERROR",
+        message: error.message,
+        payload: formData,
+        fieldErrors: undefined,
+        timestamp: new Date(),
+      };
     } else {
-      return { message: "An unknown error occurred", payload: formData };
+      return {
+        status: "ERROR",
+        message: "An unknown error occurred",
+        payload: formData,
+        fieldErrors: undefined,
+        timestamp: new Date(),
+      };
     }
   }
 
@@ -54,5 +65,10 @@ export const upsertTicket = async (
     redirect(ticketsPath());
   }
 
-  return { message: "Ticket created successfully" };
+  return {
+    status: "SUCCESS",
+    message: "Ticket created successfully",
+    fieldErrors: undefined,
+    timestamp: new Date(),
+  };
 };
