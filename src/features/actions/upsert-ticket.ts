@@ -14,7 +14,11 @@ const upsertTicketSchema = z.object({
 
 export const upsertTicket = async (
   ticketId: string | undefined,
-  _state: { message: string },
+  _state: {
+    message: string;
+    payload?: FormData;
+    fieldErrors?: Record<string, string[] | undefined>;
+  },
   formData: FormData
 ) => {
   const title = formData.get("title");
@@ -32,10 +36,16 @@ export const upsertTicket = async (
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { message: error.errors[0].message, payload: formData };
+      return {
+        message: "",
+        payload: formData,
+        fieldErrors: error.flatten().fieldErrors,
+      };
+    } else if (error instanceof Error) {
+      return { message: error.message, payload: formData };
+    } else {
+      return { message: "An unknown error occurred", payload: formData };
     }
-
-    return { message: "Something went wrong", payload: formData };
   }
 
   revalidatePath(ticketsPath());

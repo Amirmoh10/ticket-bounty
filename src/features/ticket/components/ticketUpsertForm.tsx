@@ -19,10 +19,12 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
     upsertTicket.bind(null, ticket?.id),
     {
       message: "",
+      fieldErrors: undefined,
+      payload: undefined,
     }
   );
 
-  const { message, payload } = actionState;
+  const { message, payload, fieldErrors } = actionState;
 
   return (
     <form action={action} className="flex flex-col gap-y-2">
@@ -33,13 +35,14 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
         type="text"
         defaultValue={(payload?.get("title") as string) ?? ticket?.title}
       />
-
+      <span>{fieldErrors?.title?.[0]}</span>
       <Label htmlFor="content">Content</Label>
       <Textarea
         id="content"
         name="content"
         defaultValue={(payload?.get("content") as string) ?? ticket?.content}
       />
+      <span>{fieldErrors?.content?.[0]}</span>
 
       <SubmitButton label={ticket ? "Edit" : "Create"} />
       {message}
