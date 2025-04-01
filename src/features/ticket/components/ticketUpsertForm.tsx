@@ -1,9 +1,11 @@
 "use client";
 
 import { Ticket } from "@prisma/client";
-import { useActionState } from "react";
+import { useActionState, useMemo } from "react";
+import { toast } from "sonner";
 
 import FieldError from "@/components/form/field-error";
+import { useActionFeedback } from "@/components/form/hooks/useActionFeedback";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +25,23 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
   );
 
   const { message, payload, fieldErrors } = actionState;
+
+  const options = useMemo(() => {
+    return {
+      onSuccess: () => {
+        if (actionState.message) {
+          toast.success(actionState.message);
+        }
+      },
+      onError: () => {
+        if (actionState.message) {
+          toast.error(actionState.message);
+        }
+      },
+    };
+  }, [actionState]);
+
+  useActionFeedback(actionState, options);
 
   return (
     <form action={action} className="flex flex-col gap-y-2">
