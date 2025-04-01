@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ticketEditPath, ticketPath } from "@/paths";
 
-import { deleteTicket } from "../../actions/delete-ticket";
+import { deleteTicket } from "../../../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
 
 type TicketItemProps = {
