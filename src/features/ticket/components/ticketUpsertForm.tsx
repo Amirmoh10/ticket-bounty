@@ -6,7 +6,7 @@ import { useActionState } from "react";
 import { upsertTicket } from "@/actions/upsert-ticket";
 import FieldError from "@/components/form/field-error";
 import Form from "@/components/form/form";
-import { EMPTY_ACTION_STATE } from "@/components/form/utils";
+import { ActionState } from "@/components/form/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,10 +17,16 @@ export type TicketCreateFormProps = {
   ticket?: Ticket;
 };
 
+const INITIAL_ACTION_STATE: ActionState = {
+  message: "",
+  fieldErrors: {},
+  timestamp: new Date(),
+};
+
 const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
   const [state, action] = useActionState(
     upsertTicket.bind(null, ticket?.id),
-    EMPTY_ACTION_STATE
+    INITIAL_ACTION_STATE
   );
 
   const { message, payload, fieldErrors } = state;

@@ -5,9 +5,3 @@ export type ActionState = {
   fieldErrors?: Record<string, string[] | undefined>;
   timestamp: Date;
 };
-
-export const EMPTY_ACTION_STATE: ActionState = {
-  message: "",
-  fieldErrors: {},
-  timestamp: new Date(),
-};
