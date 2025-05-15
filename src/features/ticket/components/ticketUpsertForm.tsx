@@ -18,15 +18,15 @@ export type TicketCreateFormProps = {
 };
 
 const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
-  const [actionState, action] = useActionState(
+  const [state, action] = useActionState(
     upsertTicket.bind(null, ticket?.id),
     EMPTY_ACTION_STATE
   );
 
-  const { message, payload, fieldErrors } = actionState;
+  const { message, payload, fieldErrors } = state;
 
   return (
-    <Form action={action} actionState={actionState}>
+    <Form action={action} actionState={state}>
       <Label htmlFor="title">Title</Label>
       <Input
         id="title"

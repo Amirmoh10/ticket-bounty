@@ -22,6 +22,7 @@ export const upsertTicket = async (
 ): Promise<ActionState> => {
   const title = formData.get("title");
   const content = formData.get("content");
+
   try {
     const data = upsertTicketSchema.parse({
       title: title,
@@ -34,6 +35,7 @@ export const upsertTicket = async (
       create: data,
     });
   } catch (error) {
+    // Handle zod errors
     if (error instanceof z.ZodError) {
       return {
         status: "ERROR",
@@ -43,6 +45,7 @@ export const upsertTicket = async (
         timestamp: new Date(),
       };
     } else if (error instanceof Error) {
+      // Handle database or ORMerrors
       return {
         status: "ERROR",
         message: error.message,
@@ -51,9 +54,10 @@ export const upsertTicket = async (
         timestamp: new Date(),
       };
     } else {
+      // Handle unknown errors
       return {
         status: "ERROR",
-        message: "An unknown error occurred",
+        message: "An unknown error occurred", //return a generic error message
         payload: formData,
         fieldErrors: undefined,
         timestamp: new Date(),
