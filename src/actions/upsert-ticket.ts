@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { ActionState } from "@/components/form/utils";
 import { prisma } from "@/lib/prisma-client";
+import { toCent } from "@/lib/utils";
 import { ticketsPath } from "@/paths";
 
 import { setCookieByKey } from "./cookies";
@@ -37,7 +38,7 @@ export const upsertTicket = async (
 
     const dbData = {
       ...data,
-      bounty: data.bounty * 100, // Convert to cents
+      bounty: toCent(data.bounty),
     };
 
     await prisma.ticket.upsert({
