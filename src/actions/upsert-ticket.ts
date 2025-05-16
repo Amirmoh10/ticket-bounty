@@ -54,7 +54,7 @@ export const upsertTicket = async (
         message: "",
         payload: formData,
         fieldErrors: error.flatten().fieldErrors,
-        timestamp: new Date(),
+        timestamp: Date.now(),
       };
     } else if (error instanceof Error) {
       // Handle database or ORMerrors
@@ -63,7 +63,7 @@ export const upsertTicket = async (
         message: error.message,
         payload: formData,
         fieldErrors: undefined,
-        timestamp: new Date(),
+        timestamp: Date.now(),
       };
     } else {
       // Handle unknown errors
@@ -72,7 +72,7 @@ export const upsertTicket = async (
         message: "An unknown error occurred", //return a generic error message
         payload: formData,
         fieldErrors: undefined,
-        timestamp: new Date(),
+        timestamp: Date.now(),
       };
     }
   }
@@ -88,6 +88,6 @@ export const upsertTicket = async (
     status: "SUCCESS",
     message: "Ticket created successfully",
     fieldErrors: undefined,
-    timestamp: new Date(),
+    timestamp: Date.now(),
   };
 };

@@ -22,7 +22,7 @@ export type TicketCreateFormProps = {
 const INITIAL_ACTION_STATE: ActionState = {
   message: "",
   fieldErrors: {},
-  timestamp: new Date(),
+  timestamp: Date.now(),
 };
 
 const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
@@ -31,7 +31,7 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
     INITIAL_ACTION_STATE
   );
 
-  const { message, payload, fieldErrors } = state;
+  const { message, payload, fieldErrors, timestamp } = state;
 
   return (
     <Form action={action} actionState={state}>
@@ -55,6 +55,7 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
         <div className="flex-1 flex flex-col gap-y-1">
           <Label htmlFor="deadline">Deadline</Label>
           <DatePicker
+            key={timestamp}
             id="deadline"
             name="deadline"
             defaultValue={

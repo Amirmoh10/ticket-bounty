@@ -3,5 +3,5 @@ export type ActionState = {
   message: string;
   payload?: FormData;
   fieldErrors?: Record<string, string[] | undefined>;
-  timestamp: Date;
+  timestamp: number;
 };
