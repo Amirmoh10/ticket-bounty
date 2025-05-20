@@ -1,12 +1,12 @@
 "use client";
 
 import { Ticket } from "@prisma/client";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 import { upsertTicket } from "@/actions/upsert-ticket";
 import DatePicker from "@/components/date-picker";
 import FieldError from "@/components/form/field-error";
-import Form from "@/components/form/form";
 import { ActionState } from "@/components/form/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,11 +30,28 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
     upsertTicket.bind(null, ticket?.id),
     INITIAL_ACTION_STATE
   );
+  const { message, payload, status, fieldErrors } = state;
 
-  const { message, payload, fieldErrors, timestamp } = state;
+  const datePickerImperativeHandleRef = useRef<{
+    reset: () => void;
+  } | null>(null);
+
+  useEffect(() => {
+    if (status === "SUCCESS") {
+      if (message) {
+        toast.success(message);
+      }
+
+      datePickerImperativeHandleRef?.current?.reset();
+    } else if (status === "ERROR") {
+      if (message) {
+        toast.error(message);
+      }
+    }
+  }, [status, message]);
 
   return (
-    <Form action={action} actionState={state}>
+    <form action={action} className="flex flex-col gap-y-2">
       <Label htmlFor="title">Title</Label>
       <Input
         id="title"
@@ -55,7 +72,7 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
         <div className="flex-1 flex flex-col gap-y-1">
           <Label htmlFor="deadline">Deadline</Label>
           <DatePicker
-            key={timestamp}
+            imperativeHandleRef={datePickerImperativeHandleRef}
             id="deadline"
             name="deadline"
             defaultValue={
@@ -81,8 +98,7 @@ const TicketUpsertForm = ({ ticket }: TicketCreateFormProps) => {
       </div>
 
       <SubmitButton label={ticket ? "Edit" : "Create"} />
-      {message}
-    </Form>
+    </form>
   );
 };
 
